@@ -1,5 +1,5 @@
 
-/* riot-tmpl v3.0.8, @license MIT, (c) 2015 Muut Inc. + contributors */
+/* riot-tmpl WIP, @license MIT, (c) 2015 Muut Inc. + contributors */
 ;(function (window) {     // eslint-disable-line no-extra-semi
   'use strict'
 
@@ -491,19 +491,17 @@
     function _wrapExpr (expr, asText, key) {
       var tb
 
-      if (expr.includes('=>')) {
+      if (expr.match(/=>/)) {
         try {
-          const match = expr.match(/(?<pre>.*)(?<args>(\((.*)))(=>)(?<body>(.*))\)/)
-          let { pre, args, body } = match.groups;
-          body = body.replace(/[{}\s]|(return)/g, '')
-          expr = `${pre}function${args}{return ${body}})`
-        } catch (error) {
-          console.error('Failed to transform arrow function in expression:', expr, error);
+          var match = expr.match(/(.*)((\((.*)))(=>)((.*))\)/)
+          var body = match[6].replace(/[{}\s]|(return)/g, '')
+          expr = match[1] + 'function' + match[2] + '{return ' + body + '})'
+        } catch(error) {
+          console.error('Failed to transform arrow function in expression:', expr, error)
         }
-
       }
 
-      if (!expr.includes('(function(')) {
+      if (!expr.match(/\(function\(/)) {
         expr = expr.replace(JS_VARNAME, function (match, p, mvar, pos, s) {
           if (mvar) {
             pos = tb ? 0 : pos + match.length
@@ -543,7 +541,7 @@
 
   })()
 
-  tmpl.version = brackets.version = 'v3.0.8'
+  tmpl.version = brackets.version = 'WIP'
 
   /* istanbul ignore else */
   if (typeof module === 'object' && module.exports) {
