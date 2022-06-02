@@ -213,7 +213,6 @@ describe('riot-tmpl', function () {
       expect(render('{' + (typeof window === 'object' ? 'window' : 'global') + '.globalVar }')).to.be(undefined)
       expect(render('{ this.$a }')).to.be(5)
       expect(render('{ void 0 }')).to.be(undefined)
-      // without unprefixed global/window, default convertion to `new (D).Date()` throws here
       data.Date = Date
       expect(render('{ new Date() }')).to.be.a('object')
       delete data.Date
