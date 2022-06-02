@@ -152,8 +152,6 @@ var tmpl = (function () {
     if (expr.slice(0, 11) !== 'try{return ') expr = 'return ' + expr
 
     // Create local variable called window to prevent access to global window object
-    // var exposedVars = ['Date']
-    // expr = 'var window = { ' + exposedVars.map(function(varName) { return varName + ': ' + (typeof window !== 'object' ? 'global' : 'window') + '.' + varName }).join(', ') + ' }; ' + expr
     expr = 'var ' + (typeof window !== 'object' ? 'global' : 'window') + ' = {}; ' + expr
 
 //#if DEBUG
