@@ -151,6 +151,9 @@ var tmpl = (function () {
 
     if (expr.slice(0, 11) !== 'try{return ') expr = 'return ' + expr
 
+    // Create local variable called window to prevent access to global window object
+    expr = 'var ' + (typeof window !== 'object' ? 'global' : 'window') + ' = {}; ' + expr
+
 //#if DEBUG
     if (arguments.length > 1) console.log('--- getter:\n    `' + expr + '`\n---')
 //#elif LIST_GETTERS
@@ -307,6 +310,7 @@ var tmpl = (function () {
       expr = !cnt ? _wrapExpr(expr, asText)
            : cnt > 1 ? '[' + list.join(',') + '].join(" ").trim()' : list[0]
     }
+
     return expr
 
     // Skip bracketed block, uses the str value in the closure
