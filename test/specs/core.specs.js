@@ -317,6 +317,7 @@ describe('riot-tmpl', function () {
     it('does not wrap global and window object names', function () {
       var gw = typeof window === 'object' ? 'window' : 'global'
 
+      tmpl.errorHandler = noop
       expect(render('{ ' + gw + '.globalVar }')).to.be(undefined)
       data.Date = '{}'
       expect(render('{ +new ' + gw + '.Date() }')).to.be(undefined)

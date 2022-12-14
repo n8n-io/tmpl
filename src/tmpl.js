@@ -127,14 +127,7 @@ var tmpl = (function () {
 
     // user error handler
     if (_tmpl.errorHandler) _tmpl.errorHandler(err)
-    else if (
-      typeof console !== 'undefined' &&
-      typeof console.error === 'function'
-    ) {
-      console.error(err.message)
-      console.log('<%s> %s', err.riotData.tagName || 'Unknown tag', this.tmpl) // eslint-disable-line
-      console.log(this.data) // eslint-disable-line
-    }
+    else throw err;
   }
 
   /**
