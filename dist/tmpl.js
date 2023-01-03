@@ -551,7 +551,7 @@
 
   })()
 
-  tmpl.version = brackets.version = 'WIP'
+  tmpl.version = brackets.version = 'v1.0.0'
 
   /* istanbul ignore else */
   if (typeof module === 'object' && module.exports) {
