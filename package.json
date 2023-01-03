@@ -1,6 +1,6 @@
 {
   "name": "@n8n_io/riot-tmpl",
-  "version": "1.0.1",
+  "version": "2.0.0",
   "description": "n8n fork of the riot template engine",
   "main": "dist/tmpl.js",
   "module": "dist/es6.tmpl.js",
