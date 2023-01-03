@@ -7707,15 +7707,22 @@ var tmpl = (function () {
 
     } else if (asText) {
 
-      expr = 'function(v){' + (tb
+      if (expr === 'false') {
+        expr = 'function(v){' + (tb
+          ? expr.replace('return ', 'v=') : 'v=(' + expr + ')'
+        ) + ';return false}.call(this)';
+      } else {
+
+        expr = 'function(v){' + (tb
           ? expr.replace('return ', 'v=') : 'v=(' + expr + ')'
         ) + ';return v||v===0?v:""}.call(this)';
+      }
     }
 
     return expr
   }
 
-  _tmpl.version = brackets.version = 'v1.0.0';
+  _tmpl.version = brackets.version = 'WIP';
 
   return _tmpl
 
