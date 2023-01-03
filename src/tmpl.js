@@ -199,7 +199,7 @@ var tmpl = (function () {
 
         if (expr && (expr = i & 1               // every odd element is an expression
 
-            ? _parseExpr(expr, 1, qstr)         // mode 1 convert falsy values to "",
+            ? _parseExpr(expr, 1, qstr)         // mode 1 convert falsy values (except false) to "",
                                                 // except zero
             : '"' + expr                        // ttext: convert to js literal string
                 .replace(/\\/g, '\\\\')         // this is html, preserve backslashes
@@ -251,7 +251,7 @@ var tmpl = (function () {
    * beyond `\u00FF` by quoting the names (not recommended).
    *
    * @param   {string} expr   - The expression, without brackets
-   * @param   {number} asText - 0: raw value, 1: falsy as "", except 0
+   * @param   {number} asText - 0: raw value, 1: falsy (except false) as "", except 0
    * @param   {Array}  qstr   - Where to store hidden quoted strings and regexes
    * @returns {string} Code to evaluate the expression.
    * @see {@link http://www.w3.org/TR/CSS21/grammar.html#scanner}
@@ -393,12 +393,20 @@ var tmpl = (function () {
         ) + '?"' + key + '":""'
 
     } else if (asText) {
-      // w/try : function(v){try{v=expr}catch(e){E(e,this)};return v||v===0?v:""}.call(this)
-      // no try: function(v){return (v=(expr))||v===0?v:""}.call(this)
-      // ==> 'return [' + text_and_expr_list.join(',') + '].join("")'
-      expr = 'function(v){' + (tb
+      // in multipart expression, falsy values resolve to empty string,
+      // but `false` resolves to `false` instead
+      if (expr === 'false') {
+        expr = 'function(v){' + (tb
+          ? expr.replace('return ', 'v=') : 'v=(' + expr + ')'
+        ) + ';return false}.call(this)'
+      } else {
+        // w/try : function(v){try{v=expr}catch(e){E(e,this)};return v||v===0?v:""}.call(this)
+        // no try: function(v){return (v=(expr))||v===0?v:""}.call(this)
+        // ==> 'return [' + text_and_expr_list.join(',') + '].join("")'
+        expr = 'function(v){' + (tb
           ? expr.replace('return ', 'v=') : 'v=(' + expr + ')'
         ) + ';return v||v===0?v:""}.call(this)'
+      }
     }
     // else if (!asText)
     //  no try: return expr
