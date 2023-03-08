@@ -7715,7 +7715,7 @@ var tmpl = (function () {
 
         expr = 'function(v){' + (tb
           ? expr.replace('return ', 'v=') : 'v=(' + expr + ')'
-        ) + ';return v||v===0?v:""}.call(this)';
+        ) + ';return v||v===0||v===false?v:""}.call(this)';
       }
     }
 

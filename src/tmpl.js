@@ -405,7 +405,7 @@ var tmpl = (function () {
         // ==> 'return [' + text_and_expr_list.join(',') + '].join("")'
         expr = 'function(v){' + (tb
           ? expr.replace('return ', 'v=') : 'v=(' + expr + ')'
-        ) + ';return v||v===0?v:""}.call(this)'
+        ) + ';return v||v===0||v===false?v:""}.call(this)'
       }
     }
     // else if (!asText)

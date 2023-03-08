@@ -79,10 +79,12 @@ describe('riot-tmpl', function () {
       delete data.parent
     })
 
-    it('in templates, falsy values result in empty string, except zero', function () {
+    it('in templates, falsy values result in empty string, except zero and false', function () {
       expect(render(' { nonExistingVar }')).to.equal(' ')
-      expect(render(' { no }')).to.equal(' ')
+      expect(render(' { no }')).to.equal(' false')
       expect(render(' { $a }')).to.equal(' 0')
+      expect(render('{false}')).to.equal(false)
+      expect(render(' {false}')).to.equal(' false')
     })
 
     //// expressions
