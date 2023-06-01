@@ -5,6 +5,7 @@
   "main": "dist/tmpl.js",
   "module": "dist/es6.tmpl.js",
   "jsnext:main": "dist/es6.tmpl.js",
+  "types": "index.d.ts",
   "directories": {
     "doc": "doc"
   },

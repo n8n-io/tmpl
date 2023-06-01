@@ -110,6 +110,7 @@ var tmpl = (function () {
    * @static
    */
   _tmpl.errorHandler = null
+  _tmpl.getStr = _getStr;
 
   /**
    * Output an error message through the `_tmpl.errorHandler` function and
@@ -135,6 +136,16 @@ var tmpl = (function () {
       console.log('<%s> %s', err.riotData.tagName || 'Unknown tag', this.tmpl) // eslint-disable-line
       console.log(this.data) // eslint-disable-line
     }
+  }
+
+  function _getStr(str) {
+   var expr = _getTmpl(str)
+
+    if (expr.slice(0, 11) !== 'try{return ') expr = 'return ' + expr
+
+    expr = 'var ' + (typeof window !== 'object' ? 'global' : 'window') + ' = {}; ' + expr
+
+    return expr;
   }
 
   /**
