@@ -499,31 +499,19 @@ var tmpl = (function () {
   function _wrapExpr (expr, asText, key) {
     var tb
 
-    if (expr.match(/=>/)) {
-      try {
-        var match = expr.match(/(.*)((\((.*)))(=>)((.*))\)/)
-        var body = match[6].replace(/[{}\s]|(return)/g, '')
-        expr = match[1] + 'function' + match[2] + '{return ' + body + '})'
-      } catch(error) {
-        console.error('Failed to transform arrow function in expression:', expr, error)
-      }
-    }
+    expr = expr.replace(JS_VARNAME, function (match, p, mvar, pos, s) {
+      if (mvar) {
+        pos = tb ? 0 : pos + match.length
 
-    if (!expr.match(/\(function\(/)) {
-      expr = expr.replace(JS_VARNAME, function (match, p, mvar, pos, s) {
-        if (mvar) {
-          pos = tb ? 0 : pos + match.length
-
-          if (mvar !== 'this' && mvar !== 'global' && mvar !== 'window') {
-            match = p + '("' + mvar + JS_CONTEXT + mvar
-            if (pos) tb = (s = s[pos]) === '.' || s === '(' || s === '['
-          } else if (pos) {
-            tb = !JS_NOPROPS.test(s.slice(pos))
-          }
+        if (mvar !== 'this' && mvar !== 'global' && mvar !== 'window') {
+          match = p + '("' + mvar + JS_CONTEXT + mvar
+          if (pos) tb = (s = s[pos]) === '.' || s === '(' || s === '['
+        } else if (pos) {
+          tb = !JS_NOPROPS.test(s.slice(pos))
         }
-        return match
-      })
-    }
+      }
+      return match
+    })
 
     if (tb) {
       expr = 'try{return ' + expr + '}catch(e){E(e,this)}'
@@ -557,4 +545,3 @@ var tmpl = (function () {
   return _tmpl
 
 })()
-
