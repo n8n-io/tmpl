@@ -13,7 +13,8 @@
     "src",
     "doc",
     "dist/*.js",
-    "test/**"
+    "test/**",
+    "index.d.ts"
   ],
   "scripts": {
     "test": "make test",
