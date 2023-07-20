@@ -1,6 +1,6 @@
 {
   "name": "@n8n_io/riot-tmpl",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "description": "n8n fork of the riot template engine",
   "main": "dist/tmpl.js",
   "module": "dist/es6.tmpl.js",
@@ -13,7 +13,8 @@
     "src",
     "doc",
     "dist/*.js",
-    "test/**"
+    "test/**",
+    "index.d.ts"
   ],
   "scripts": {
     "test": "make test",
